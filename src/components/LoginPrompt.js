@@ -57,26 +57,38 @@ export default function Login() {
 
             // README: THIS WORKS
             (async () => {
-                const value = await datastore.get(
+                var value = await datastore.get(
                     emailAddress,
                     "users",
                     "emailAddress"
                 );
-                if (value.password !== password) {
-                    alert(`Cannot authenticate ${emailAddress}! Try again!`);
+                console.log(value);
+                value = value[0].data().value; // this sucks but is the only way
+                if (value.length == 0) {
+                    alert(`cannot find the email address of ${emailAddress}`);
+
                     reset({
                         emailAddress: "",
                         passwordProvided: "",
                     });
                 } else {
-                    history.push({
-                        pathname: "/landing",
-                        state: {
-                            response: "hey mom, no hands!",
-                        },
-                    });
+                    if (value.password !== password) {
+                        alert(
+                            `Cannot authenticate ${emailAddress}! Try again!`
+                        );
+                        reset({
+                            emailAddress: "",
+                            passwordProvided: "",
+                        });
+                    } else {
+                        history.push({
+                            pathname: "/landing",
+                            state: {
+                                response: "hey mom, no hands!",
+                            },
+                        });
+                    }
                 }
-                console.log(value);
             })();
 
             // NOTE:  this is how you remove a user
