@@ -138,7 +138,7 @@ export default function Login() {
                     type="button"
                     onClick={() =>
                         reset({
-                            emailAddress: "joyounger@csu.fullerton.edu",
+                            emailAddress: "jareddyreson@csu.fullerton.edu",
                             passwordProvided: "1234",
                         })
                     }
