@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/LoginPrompt.js"; // import function exports like this
 import Landing from "./components/Landing.js";
 import PaymentSelectionScreen from "./components/PaymentSelection.js";
+import PaymentInputScreen from "./components/PaymentInput.js";
 import LocationSelectionMenu from "./components/LocationSelection.js";
 
 import "./styles.css";
@@ -28,7 +29,13 @@ class App extends React.Component {
                                 path="/paymentselection"
                                 component={PaymentSelectionScreen}
                             />
+                            <Route
+                                exact
+                                path="/paymentinput"
+                                component={PaymentInputScreen}
+                            />
                             <Route exact path="/landing" component={Landing} />
+
                             <Route
                                 exact
                                 path="/locations"
