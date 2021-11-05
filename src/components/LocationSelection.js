@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"; // importing useEffect here
 
 import { useHistory } from "react-router-dom"; // needs to redirect to the drink selector
+import { useForm } from "react-hook-form";
 import { Location } from "../helper/location.js";
 import { FirebaseStore } from "../helper/firestore.js";
 
@@ -51,30 +52,71 @@ const Title = () => (
     </h1>
 );
 
-const Row = (packet) => (
-    <p style={{ color: "white" }}>
-        {packet.address} | {packet.name}
-    </p>
-);
-
 const GatheredInformation = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    var datastore = new FirebaseStore("");
+    const history = useHistory();
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+    const onSubmit = (data, event) => {
+        event.target.reset();
+        (async () => {
+            await datastore.update(
+                {
+                    location: data.location,
+                },
+                "sessions",
+                "session_id_1"
+            );
+
+            history.push({
+                pathname: "/",
+                state: {
+                    response: "hey mom, no hands!",
+                },
+            });
+        })();
+    };
+
+    const Row = (packet) => (
+        <div>
+            <label for={packet.address}>{packet.address}</label>
+            <div>
+                <input
+                    type="radio"
+                    value={packet.address}
+                    name="payment-type"
+                    style={{ color: "white" }}
+                    {...register("location", {
+                        required: true,
+                    })}
+                />
+            </div>
+        </div>
+    );
     // useEffect with an empty dependency array works the same way as componentDidMount
-    useEffect(async () => {
-        try {
-            // set loading to true before calling API
-            setLoading(true);
-            const data = await gatherInformation();
-            setData(data);
-            // switch loading to false after fetch is complete
-            setLoading(false);
-        } catch (error) {
-            // add error handling here
-            setLoading(false);
-            console.log(error);
-        }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // set loading to true before calling API
+                setLoading(true);
+                const data = await gatherInformation();
+                setData(data);
+                // switch loading to false after fetch is complete
+                setLoading(false);
+            } catch (error) {
+                // add error handling here
+                setLoading(false);
+                console.log(error);
+            }
+        })();
     }, []);
 
     // return a Spinner when loading is true
@@ -88,8 +130,16 @@ const GatheredInformation = () => {
         rows.push(Row(doc));
     });
 
-    // when data is available, title is shown
-    return <div id="divElement">{rows}</div>;
+    return (
+        <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <ul>
+                    <div>{rows}</div>
+                </ul>
+                <input type="submit" value="continue" />
+            </form>
+        </div>
+    );
 };
 
 /*
@@ -99,7 +149,6 @@ const GatheredInformation = () => {
 export default function LocationSelectionMenu() {
     // either acquire the locations in sorted order or do it in this function
     // this data will come from Firestore
-    // TODO: hook Firestore into the application
 
     return (
         <div>

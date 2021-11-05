@@ -16,10 +16,6 @@ export default function Login() {
         formState: { errors },
     } = useForm();
 
-    const validate_email = (email) => {
-        return /.+@csu\.fullerton\.edu$/.test(email);
-    };
-
     const onSubmit = (data, e) => {
         e.target.reset();
         // This will transition us into the next React component
@@ -27,85 +23,66 @@ export default function Login() {
         // Thank you StackOverflow, I am forver in debt to you
 
         const [emailAddress, password] = Object.values(data);
-        if (!validate_email(emailAddress)) {
-            // FIXME
-            // Make this look cooler
-            alert(`Oops, ${emailAddress} is not apart of a valid email domain`);
-            reset({
-                emailAddress: "",
-                passwordProvided: "",
-            });
-        } else {
-            // NOTE: this is how you add USERS | IE a sign up feature
+        // NOTE: this is how you add USERS | IE a sign up feature
 
-            // datastore.add(
-            // { emailAddress: emailAddress, password: password },
-            // "users"
-            // );
+        // datastore.add(
+        // { emailAddress: emailAddress, password: password },
+        // "users"
+        // );
 
-            // Obtain all users
+        // Obtain all users
 
-            // (async () => {
-            //   console.log(await datastore.getAll("users"));
-            // })();
+        // (async () => {
+        //   console.log(await datastore.getAll("users"));
+        // })();
 
-            // Obtain all users based on an attribute
+        // Obtain all users based on an attribute
 
-            //(async () => {
-            //  console.log(await datastore.get(emailAddress, "users", "emailAddress"));
-            //})();
+        //(async () => {
+        //  console.log(await datastore.get(emailAddress, "users", "emailAddress"));
+        //})();
 
-            // README: THIS WORKS
-            (async () => {
-                var value = await datastore.get(
-                    emailAddress,
-                    "users",
-                    "emailAddress"
-                );
-                console.log(value);
-                value = value[0].data().value; // this sucks but is the only way
-                if (value.length == 0) {
-                    alert(`cannot find the email address of ${emailAddress}`);
+        // README: THIS WORKS
+        (async () => {
+            var value = await datastore.get(
+                emailAddress,
+                "users",
+                "emailAddress"
+            );
+            console.log(value);
+            value = value[0].data().value; // this sucks but is the only way
+            if (value.length == 0) {
+                alert(`cannot find the email address of ${emailAddress}`);
 
+                reset({
+                    emailAddress: "",
+                    passwordProvided: "",
+                });
+            } else {
+                if (value.password !== password) {
+                    alert(`Cannot authenticate ${emailAddress}! Try again!`);
                     reset({
                         emailAddress: "",
                         passwordProvided: "",
                     });
                 } else {
-                    if (value.password !== password) {
-                        alert(
-                            `Cannot authenticate ${emailAddress}! Try again!`
-                        );
-                        reset({
-                            emailAddress: "",
-                            passwordProvided: "",
-                        });
-                    } else {
-                        history.push({
-                            pathname: "/landing",
-                            state: {
-                                response: "hey mom, no hands!",
-                            },
-                        });
-                    }
+                    await datastore.update(
+                        {
+                            emailAddress: emailAddress,
+                        },
+                        "sessions",
+                        "session_id_1"
+                    );
+                    history.push({
+                        pathname: "/locations",
+                        state: {
+                            response: "hey mom, no hands!",
+                            value: emailAddress,
+                        },
+                    });
                 }
-            })();
-
-            // NOTE:  this is how you remove a user
-
-            // (async () => {
-            //   await datastore.remove(emailAddress, "users", "emailAddress");
-            // })();
-
-            // (async () => {
-            //   const value = await datastore.get(
-            //     emailAddress,
-            //     "users",
-            //     "emailAddress"
-            //   );
-            //   console.log(value);
-            // })();
-        }
+            }
+        })();
     };
     // This takes place of the render function
 
@@ -116,7 +93,10 @@ export default function Login() {
                 <label>Email Address</label>
                 <input
                     type="text"
-                    {...register("emailAddress", { required: true })}
+                    {...register("emailAddress", {
+                        required: true,
+                        pattern: /.+@csu\.fullerton\.edu$/,
+                    })}
                 />
                 {errors.emailAddress && <p>This is required</p>}
 
