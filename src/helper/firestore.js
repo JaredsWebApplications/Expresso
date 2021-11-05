@@ -4,10 +4,8 @@ import {
     updateDoc,
     query,
     getDocs,
-    where,
     getFirestore,
     collection,
-    DocumentSnapshot,
     writeBatch,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
@@ -84,7 +82,7 @@ class FirebaseStore extends DataStore {
         const information = await getDocs(current_query);
         information.forEach((doc) => {
             const data = doc.data();
-            if (data.value[attr] == key) {
+            if (data.value[attr] === key) {
                 container.push(doc);
             }
         });

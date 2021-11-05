@@ -51,7 +51,7 @@ export default function Login() {
             );
             console.log(value);
             value = value[0].data().value; // this sucks but is the only way
-            if (value.length == 0) {
+            if (value.length === 0) {
                 alert(`cannot find the email address of ${emailAddress}`);
 
                 reset({
