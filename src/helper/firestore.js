@@ -1,6 +1,7 @@
 import {
     doc,
     setDoc,
+    updateDoc,
     query,
     getDocs,
     where,
@@ -46,6 +47,17 @@ class FirebaseStore extends DataStore {
         await setDoc(doc(this.data_base, _collection, this.makeDocHash(20)), {
             value,
         });
+    }
+
+    async add(value, _collection, session) {
+        // NOTE: duplicate code
+        // REFACTOR ME PLEASE!
+        await setDoc(doc(this.data_base, _collection, session), {
+            value,
+        });
+    }
+    async update(payload, _collection, document_id) {
+        await updateDoc(doc(this.data_base, _collection, document_id), payload);
     }
     async getAll(_collection) {
         /*
