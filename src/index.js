@@ -1,52 +1,46 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Login from "./components/LoginPrompt.js"; // import function exports like this
-import Landing from "./components/Landing.js";
-import PaymentSelectionScreen from "./components/PaymentSelection.js";
-import PaymentInputScreen from "./components/PaymentInput.js";
-import LocationSelectionMenu from "./components/LocationSelection.js";
+//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
-import "./styles.css";
-// This should appear in the repo
-// Push this to the test branch
+import Login from './Login';
+import Home from './Home';
 
-// you must define the paths here in main
-// a lot like routes.py in Flask
-// NOTE: current approach does NOT protect against unauthorized redirects
-// beyond the scope of this section at the moment, will lookn into later
+ReactDOM.render(
+  <React.StrictMode>
+    <div>
+      <BrowserRouter>
+        <div>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/menu" component={Home} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </div>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-class App extends React.Component {
-    render() {
-        return (
-            <div>
-                <BrowserRouter>
-                    <div>
-                        <Switch>
-                            <Route exact path="/" component={Login} />
-                            <Route
-                                exact
-                                path="/paymentselection"
-                                component={PaymentSelectionScreen}
-                            />
-                            <Route
-                                exact
-                                path="/paymentinput"
-                                component={PaymentInputScreen}
-                            />
-                            <Route exact path="/landing" component={Landing} />
+// NOTE: everything below is just for debugging.
+function deleteAllCookies() {
+  var cookies = document.cookie.split(";");
 
-                            <Route
-                                exact
-                                path="/locations"
-                                component={LocationSelectionMenu}
-                            />
-                        </Switch>
-                    </div>
-                </BrowserRouter>
-            </div>
-        );
-    }
+  for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf("=");
+      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));
+function getCookie(cookie) {
+  return document.cookie
+  .split('; ')
+  .find(row => row.startsWith(cookie + '='))
+  .split('=')[1];
+}
+//deleteAllCookies();
+//document.cookie = 'account_email=admin@gmail.com;'; document.cookie='account_pwd=password123;'
+//console.log(getCookie('account_email'));
