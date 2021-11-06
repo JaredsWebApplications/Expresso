@@ -10,7 +10,12 @@ async function gatherInformation() {
     var datastore = new FirebaseStore("");
 
     var locations = await datastore.getAll("locations");
-    locations.forEach((document) => {
+    var condensed = [];
+    // We changed the getAll function and we need to iterate over the container like this
+    locations.forEach((element) => {
+        condensed.push(element[1]);
+    });
+    condensed.forEach((document) => {
         var sorted = Object.keys(document)
             .sort()
             .reduce(function (acc, key) {
@@ -76,7 +81,7 @@ const GatheredInformation = () => {
             );
 
             history.push({
-                pathname: "/",
+                pathname: "/paymentselection",
                 state: {
                     response: "hey mom, no hands!",
                 },
@@ -86,7 +91,9 @@ const GatheredInformation = () => {
 
     const Row = (packet) => (
         <div>
-            <label for={packet.address}>{packet.address}</label>
+            <label for={packet.address}>
+                {packet.address} | Queue Length: {packet.queue_length}
+            </label>
             <div>
                 <input
                     type="radio"

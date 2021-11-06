@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { FirebaseStore } from "../helper/firestore.js";
 
 // VISA glyph?
 //
 export default function PaymentInputScreen() {
     const history = useHistory();
+    var datastore = new FirebaseStore("");
 
     var state = {};
 
@@ -18,13 +20,71 @@ export default function PaymentInputScreen() {
     } = useForm();
 
     const onSubmit = (data, event) => {
-        history.push({
-            pathname: "/landing", // this should go to the next screen, which is filling out information regardnig the payment
-            state: {
-                response: "hey mom, no hands!",
-                data: Object.assign({}, data, state), // pass this to the next page
-            },
-        });
+        event.target.reset();
+        data = Object.assign({}, data, state);
+
+        (async () => {
+            var payload = {
+                card_number: data.credit_card_number,
+                expiration_month: data.expiration_month,
+                expiration_year: data.expiration_year,
+                card_holder: data.card_holder_name,
+            };
+            await datastore.update(
+                {
+                    payment_information: {
+                        payload,
+                    },
+                },
+                "sessions",
+                "session_id_1"
+            );
+
+            const value = await datastore.getAll("sessions");
+            var current_session = {};
+
+            value.forEach((doc) => {
+                //const data = doc.data();
+                const [document_id, data] = doc;
+                if (document_id === "session_id_1") {
+                    current_session = data;
+                }
+            });
+            var current_location = current_session.location;
+            console.log(current_location);
+
+            const current_location_information = await datastore.filter(
+                "locations",
+                "address",
+                current_location
+            );
+            var current_queue_length =
+                current_location_information[0][1].queue_length;
+            console.log(current_queue_length);
+
+            await datastore.update(
+                {
+                    queue_length: current_queue_length + 1,
+                },
+                "locations",
+                current_location_information[0][0]
+            );
+
+            await datastore.update(
+                {
+                    queue_position: current_queue_length + 1,
+                },
+                "sessions",
+                "session_id_1"
+            );
+
+            history.push({
+                pathname: "/landing",
+                state: {
+                    response: "hey mom, no hands!",
+                },
+            });
+        })();
     };
 
     return (

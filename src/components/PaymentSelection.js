@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { FirebaseStore } from "../helper/firestore.js";
 
 // Images
 var CreditCardGlyph = require("./assets/creditcard-solid-resize.png");
@@ -16,6 +17,7 @@ var PayPalGlyph = require("./assets/paypal-71-889557-resize.png");
 
 export default function PaymentSelectionScreen() {
     const history = useHistory();
+    var datastore = new FirebaseStore("");
     const {
         register,
         handleSubmit,
@@ -23,13 +25,23 @@ export default function PaymentSelectionScreen() {
     } = useForm();
 
     const onSubmit = (data, event) => {
-        history.push({
-            pathname: "/landing", // this should go to the next screen, which is filling out information regardnig the payment
-            state: {
-                response: "hey mom, no hands!",
-                data: data, // pass this to the next page
-            },
-        });
+        event.target.reset();
+        (async () => {
+            await datastore.update(
+                {
+                    payment_type: data.payment,
+                },
+                "sessions",
+                "session_id_1"
+            );
+
+            history.push({
+                pathname: "/paymentinput",
+                state: {
+                    response: "hey mom, no hands!",
+                },
+            });
+        })();
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
