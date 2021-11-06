@@ -65,6 +65,7 @@ const GatheredInformation = () => {
     } = useForm();
 
     const onSubmit = (data, event) => {
+
         event.target.reset();
         (async () => {
             await datastore.update(
@@ -76,7 +77,7 @@ const GatheredInformation = () => {
             );
 
             history.push({
-                pathname: "/",
+                pathname: "/paymentselection",
                 state: {
                     response: "hey mom, no hands!",
                 },
@@ -86,7 +87,9 @@ const GatheredInformation = () => {
 
     const Row = (packet) => (
         <div>
-            <label for={packet.address}>{packet.address}</label>
+            <label for={packet.address}>
+                {packet.address} | Queue Length: {packet.queue_length}
+            </label>
             <div>
                 <input
                     type="radio"

@@ -41,20 +41,28 @@ class FirebaseStore extends DataStore {
 
         this.data_base = getFirestore();
     }
-    async add(value, _collection) {
-        await setDoc(doc(this.data_base, _collection, this.makeDocHash(20)), {
-            value,
-        });
+
+    async _add(payload, _collection, document_id) {
+        /*
+         * Template function for the firestore to add to a selected document
+         */
+
+        await setDoc(doc(this.data_base, _collection, document_id), payload);
+    }
+    async add(payload, _collection) {
+        await this._add(payload, _collection, this.makeDocHash(20));
     }
 
-    async add(value, _collection, session) {
-        // NOTE: duplicate code
-        // REFACTOR ME PLEASE!
-        await setDoc(doc(this.data_base, _collection, session), {
-            value,
-        });
+    async add_session(payload, _collection, session) {
+        /*
+         * add new session id for the current user
+         */
+        await this._add(payload, _collection, session);
     }
     async update(payload, _collection, document_id) {
+        /*
+         * Update records
+         */
         await updateDoc(doc(this.data_base, _collection, document_id), payload);
     }
     async getAll(_collection) {
@@ -67,47 +75,70 @@ class FirebaseStore extends DataStore {
         );
         var documents = [];
         querySnapshot.forEach((doc) => {
-            documents.push(doc.data());
+            documents.push([doc.id, doc.data()]);
         });
         return await documents;
     }
 
-    async _get(key, _collection, attr) {
-        const current_query = await query(
-            collection(this.data_base, _collection)
-        );
+    async _get(_collection, document_id) {
+        /*
+         * Get information from a collection as a document object
+         * So we can use this for removing and updating at will
+         */
 
         var container = [];
 
-        const information = await getDocs(current_query);
-        information.forEach((doc) => {
-            const data = doc.data();
-            if (data.value[attr] === key) {
+        const current_query = await query(
+            collection(this.data_base, _collection, document_id)
+        );
+
+        const value = await getDocs(current_query);
+        value.forEach((doc) => {
+            container.push(doc);
+        });
+
+        return await container;
+    }
+
+    async get(email) {
+        return;
+    }
+
+    async filter(_collection, attr, desired) {
+        /*
+         * Apply a filter to the get function
+         * I understand this is how the "where" function essentially works
+         * but I am too crammed for time to attempt to get this to work
+         */
+
+        var container = [];
+        const value = await this.getAll(_collection);
+
+        value.forEach((doc) => {
+            // I don't care, I really don't
+            const [document_id, data] = doc;
+            if (data.value === undefined && data[attr] === desired) {
+                container.push(doc);
+            }
+            if (data.value !== undefined && data.value[attr] === desired) {
                 container.push(doc);
             }
         });
-
-        return container;
+        return await container;
     }
 
-    async get(key, _collection, attr) {
-        //var container = [];
-
-        //(await this._get(key, _collection, attr)).forEach((doc) => {
-        //container.push(doc.data());
-        //});
-        const information = await this._get(key, _collection, attr);
-        console.log(information);
-        return information;
-    }
-    async remove(key, _collection, attr) {
+    async remove(_collection, document_id) {
+        /*
+         * Remove element from a collection
+         * Example:
+         * collection (location)
+         * - document (document_id)
+         */
         const batch = writeBatch(this.data_base);
-        (await this._get(key, _collection, attr)).forEach((doc) => {
+        (await this._get(_collection, document_id)).forEach((doc) => {
             batch.delete(doc.ref);
         });
         await batch.commit();
-        // const batch = this.db.batch();
-        // const snapshot = await docRef.where("emailAddress", "==", key).get();
     }
 
     makeDocHash(len) {

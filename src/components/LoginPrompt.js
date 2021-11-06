@@ -44,13 +44,11 @@ export default function Login() {
 
         // README: THIS WORKS
         (async () => {
-            var value = await datastore.get(
-                emailAddress,
+            var value = await datastore.filter(
                 "users",
-                "emailAddress"
+                "emailAddress",
+                emailAddress
             );
-            console.log(value);
-            value = value[0].data().value; // this sucks but is the only way
             if (value.length === 0) {
                 alert(`cannot find the email address of ${emailAddress}`);
 
@@ -59,6 +57,7 @@ export default function Login() {
                     passwordProvided: "",
                 });
             } else {
+                value = value[0].value; // this sucks but is the only way
                 if (value.password !== password) {
                     alert(`Cannot authenticate ${emailAddress}! Try again!`);
                     reset({
@@ -107,11 +106,11 @@ export default function Login() {
                 />
                 {errors.passwordProvided && <p>This is required</p>}
 
-                <input type="submit" />
+                <input type="submit" value="submit" />
                 <input
                     style={{ display: "block", marginTop: 20 }}
                     type="reset"
-                    value="Standard Reset Field Values"
+                    value="Reset Values"
                 />
                 <input
                     style={{ display: "block", marginTop: 20 }}
