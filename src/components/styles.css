@@ -136,6 +136,7 @@ button {
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
+    background-color: grey;
     /*width: 100px;*/
     /*height: 100px;*/
 }

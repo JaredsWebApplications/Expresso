@@ -1,0 +1,15 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#header-logo {
+    width: 60px;
+    height: 50px;
+}
+
+.header-nav-button {
+    margin-top: 12px;
+    font-family: 'SoDoSans Regular';
+}

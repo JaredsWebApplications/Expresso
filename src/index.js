@@ -1,46 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
 
-import Login from './Login';
-import Home from './Home';
+/*
+ * Defined by us
+ */
 
-ReactDOM.render(
-  <React.StrictMode>
-    <div>
-      <BrowserRouter>
-        <div>
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/menu" component={Home} />
-          </Switch>
-        </div>
-      </BrowserRouter>
-    </div>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import Login from "./components/LoginPrompt.js"; // import function exports like this
 
-// NOTE: everything below is just for debugging.
-function deleteAllCookies() {
-  var cookies = document.cookie.split(";");
+//import Landing from "./components/Landing.js";
+//import PaymentSelectionScreen from "./components/PaymentSelection.js";
+//import PaymentInputScreen from "./components/PaymentInput.js";
+//import LocationSelectionMenu from "./components/LocationSelection.js";
+//import ExitScreen from "./components/ExitScreen.js";
 
-  for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i];
-      var eqPos = cookie.indexOf("=");
-      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
+import "./styles.css";
+// This should appear in the repo
+// Push this to the test branch
+
+// you must define the paths here in main
+// a lot like routes.py in Flask
+// NOTE: current approach does NOT protect against unauthorized redirects
+// beyond the scope of this section at the moment, will lookn into later
+
+//<Route exact path="/exit" component={ExitScreen} />
+//<Route exact path="/landing" component={Landing} />
+//<Route
+//exact
+//path="/locations"
+//component={LocationSelectionMenu}
+///>
+//<Route
+//exact
+//path="/paymentselection"
+//component={PaymentSelectionScreen}
+///>
+//<Route
+//exact
+//path="/paymentinput"
+//component={PaymentInputScreen}
+///>
+
+class App extends React.Component {
+    render() {
+        return (
+            <div>
+                <BrowserRouter>
+                    <div>
+                        <Switch>
+                            <Route exact path="/" component={Login} />
+                        </Switch>
+                    </div>
+                </BrowserRouter>
+            </div>
+        );
+    }
 }
-function getCookie(cookie) {
-  return document.cookie
-  .split('; ')
-  .find(row => row.startsWith(cookie + '='))
-  .split('=')[1];
-}
-//deleteAllCookies();
-//document.cookie = 'account_email=admin@gmail.com;'; document.cookie='account_pwd=password123;'
-//console.log(getCookie('account_email'));
+
+ReactDOM.render(<App />, document.getElementById("root"));
