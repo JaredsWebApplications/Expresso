@@ -10,7 +10,12 @@ async function gatherInformation() {
     var datastore = new FirebaseStore("");
 
     var locations = await datastore.getAll("locations");
-    locations.forEach((document) => {
+    var condensed = [];
+    // We changed the getAll function and we need to iterate over the container like this
+    locations.forEach((element) => {
+        condensed.push(element[1]);
+    });
+    condensed.forEach((document) => {
         var sorted = Object.keys(document)
             .sort()
             .reduce(function (acc, key) {
@@ -65,7 +70,6 @@ const GatheredInformation = () => {
     } = useForm();
 
     const onSubmit = (data, event) => {
-
         event.target.reset();
         (async () => {
             await datastore.update(

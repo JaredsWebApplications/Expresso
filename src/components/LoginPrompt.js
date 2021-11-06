@@ -49,6 +49,7 @@ export default function Login() {
                 "emailAddress",
                 emailAddress
             );
+            console.log(value);
             if (value.length === 0) {
                 alert(`cannot find the email address of ${emailAddress}`);
 
@@ -57,7 +58,7 @@ export default function Login() {
                     passwordProvided: "",
                 });
             } else {
-                value = value[0].value; // this sucks but is the only way
+                value = value[0][1].value; // this sucks but is the only way
                 if (value.password !== password) {
                     alert(`Cannot authenticate ${emailAddress}! Try again!`);
                     reset({
