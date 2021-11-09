@@ -1,0 +1,70 @@
+#login-background {
+    background-image: url('./static/background-faded.png');
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background-size: contain;
+    background-position: center;
+    transform: scale(1.5, 1.5);
+    -ms-transform: scale(1.5, 1.5);
+    -webkit-transform: scale(1.5, 1.5);
+}
+
+/*@media only screen and (max-width: 1024px) {
+    #login-background {
+        background-size: cover;
+    }
+}*/
+
+#login-container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-logo {
+    padding: 16px;
+}
+
+#login-form {
+    padding-right: 16px;
+    /*
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    */
+}
+
+/*
+#login-title {
+    font-family: 'YanoneKaffeesatz Bold', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 48px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+*/
+
+#login-button {
+    background-color: #9c8d75;
+    border-color: #9c8d75;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#login-error-text {
+    color: #f00;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
