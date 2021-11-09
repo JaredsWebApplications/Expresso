@@ -1,48 +1,25 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { FirebaseStore } from "../helper/firestore.js";
 
-import "../styles.css";
+import "./Login.css";
 
-export default function Login() {
-    const history = useHistory();
-    var datastore = new FirebaseStore("");
-
+function Prompt() {
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
     } = useForm();
+    const methods = useForm();
+
+    const history = useHistory();
+    var datastore = new FirebaseStore("");
 
     const onSubmit = (data, e) => {
         e.target.reset();
-        // This will transition us into the next React component
-        // https://stackoverflow.com/questions/60516300/how-to-use-in-reactjs-functional-component-history-push
-        // Thank you StackOverflow, I am forver in debt to you
-
         const [emailAddress, password] = Object.values(data);
-        // NOTE: this is how you add USERS | IE a sign up feature
-
-        // datastore.add(
-        // { emailAddress: emailAddress, password: password },
-        // "users"
-        // );
-
-        // Obtain all users
-
-        // (async () => {
-        //   console.log(await datastore.getAll("users"));
-        // })();
-
-        // Obtain all users based on an attribute
-
-        //(async () => {
-        //  console.log(await datastore.get(emailAddress, "users", "emailAddress"));
-        //})();
-
-        // README: THIS WORKS
         (async () => {
             var value = await datastore.get(
                 emailAddress,
@@ -84,35 +61,31 @@ export default function Login() {
             }
         })();
     };
-    // This takes place of the render function
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>Email Address</label>
+        <FormProvider {...methods}>
+            <form id="login-form" handleSubmit={methods.onSubmit}>
                 <input
-                    type="text"
+                    type="email"
+                    className="form-control"
+                    id="user-email"
+                    placeholder="Email"
                     {...register("emailAddress", {
                         required: true,
                         pattern: /.+@csu\.fullerton\.edu$/,
                     })}
                 />
-                {errors.emailAddress && <p>This is required</p>}
-
-                <label>Password</label>
                 <input
-                    type="text"
-                    {...register("passwordProvided", { required: true })}
+                    type="password"
+                    className="form-control"
+                    id="user-pwd"
+                    placeholder="Password"
+                    {...register("passwordProvided", {
+                        required: true,
+                        pattern: /.+@csu\.fullerton\.edu$/,
+                    })}
                 />
-                {errors.passwordProvided && <p>This is required</p>}
-
                 <input type="submit" />
-                <input
-                    style={{ display: "block", marginTop: 20 }}
-                    type="reset"
-                    value="Standard Reset Field Values"
-                />
                 <input
                     style={{ display: "block", marginTop: 20 }}
                     type="button"
@@ -125,6 +98,30 @@ export default function Login() {
                     value="Reset with values"
                 />
             </form>
+        </FormProvider>
+    );
+}
+
+export default function Login() {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    return (
+        <div className="Login">
+            <span id="login-background"></span>
+
+            <div id="login-container">
+                <img
+                    src={"./assets/logo.png"}
+                    id="login-logo"
+                    alt="Login Logo"
+                />
+                <Prompt />
+            </div>
         </div>
     );
 }
