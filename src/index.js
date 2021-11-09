@@ -19,13 +19,6 @@ class App extends React.Component {
                     <div>
                         <Switch>
                             <Route exact path="/" component={Login} />
-                            <Route exact path="/exit" component={ExitScreen} />
-                            <Route exact path="/landing" component={Landing} />
-                            <Route
-                                exact
-                                path="/locations"
-                                component={LocationSelectionMenu}
-                            />
                             <Route
                                 exact
                                 path="/locations"
