@@ -101,6 +101,15 @@ class FirebaseStore extends DataStore {
     }
 
     async get(email) {
+        // Javascript, my boy
+        // If the function signature does not match the function call
+        // DO
+        // NOT
+        // RUN
+        // TELL
+        // ME
+        // WHY!!!!!
+
         return;
     }
 

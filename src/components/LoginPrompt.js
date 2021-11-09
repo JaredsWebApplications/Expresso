@@ -34,34 +34,39 @@ export default class Login extends React.Component {
     async handleLoginSubmit(event) {
         event.preventDefault();
 
-        var value = await this.datastore.get(
-            this.info.emailAddress,
+        var obtained = await this.datastore.filter(
             "users",
-            "emailAddress"
+            "emailAddress",
+            this.info.emailAddress
         );
-        value = value[0].data().value; // this sucks but is the only way
-        if (value.length == 0) {
+        if (obtained === undefined || obtained.length == 0) {
             alert(`cannot find the email address of ${this.info.emailAddress}`);
+            this.props.history.push({
+                pathname: "/",
+                state: {
+                    response: "hey mom, no hands!",
+                },
+            });
+            return;
+        }
+        console.log(obtained);
+        const [[document_id, value]] = obtained;
+        if (value.value.password !== this.info.password) {
+            alert(`Cannot authenticate ${this.info.emailAddress}! Try again!`);
         } else {
-            if (value.password !== this.info.password) {
-                alert(
-                    `Cannot authenticate ${this.info.emailAddress}! Try again!`
-                );
-            } else {
-                await this.datastore.update(
-                    {
-                        emailAddress: this.info.emailAddress,
-                    },
-                    "sessions",
-                    "session_id_1"
-                );
-                this.props.history.push({
-                    pathname: "/locations",
-                    state: {
-                        response: "hey mom, no hands!",
-                    },
-                });
-            }
+            await this.datastore.update(
+                {
+                    emailAddress: this.info.emailAddress,
+                },
+                "sessions",
+                "session_id_1"
+            );
+            this.props.history.push({
+                pathname: "/locations",
+                state: {
+                    response: "hey mom, no hands!",
+                },
+            });
         }
     }
 
