@@ -11,7 +11,7 @@ import Login from "./components/LoginPrompt.js"; // import function exports like
 //import Landing from "./components/Landing.js";
 //import PaymentSelectionScreen from "./components/PaymentSelection.js";
 //import PaymentInputScreen from "./components/PaymentInput.js";
-//import LocationSelectionMenu from "./components/LocationSelection.js";
+import LocationSelectionMenu from "./components/LocationSelection.js";
 //import ExitScreen from "./components/ExitScreen.js";
 
 import "./styles.css";
@@ -49,6 +49,11 @@ class App extends React.Component {
                     <div>
                         <Switch>
                             <Route exact path="/" component={Login} />
+                            <Route
+                                exact
+                                path="/locations"
+                                component={LocationSelectionMenu}
+                            />
                         </Switch>
                     </div>
                 </BrowserRouter>
