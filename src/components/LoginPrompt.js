@@ -34,6 +34,7 @@ export default class Login extends React.Component {
     async handleLoginSubmit(event) {
         event.preventDefault();
 
+
         var value = await this.datastore.get(
             this.info.emailAddress,
             "users",
@@ -63,9 +64,8 @@ export default class Login extends React.Component {
                 });
             }
         }
-
     }
-
+  
     render() {
         return (
             <div className="Login">
@@ -106,5 +106,5 @@ export default class Login extends React.Component {
                 </div>
             </div>
         );
-    }
+
 }
