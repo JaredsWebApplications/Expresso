@@ -159,6 +159,7 @@ export default function LocationSelectionMenu() {
 
     return (
         <div>
+            <span id="login-background"></span>
             <Title />
             <GatheredInformation />
         </div>
