@@ -1,0 +1,32 @@
+#exit-background {
+    background-image: url("./static/background-faded.png");
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background-size: contain;
+    background-position: center;
+    transform: scale(1.5, 1.5);
+    -ms-transform: scale(1.5, 1.5);
+    -webkit-transform: scale(1.5, 1.5);
+}
+
+#information-container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#para {
+    color: white;
+}

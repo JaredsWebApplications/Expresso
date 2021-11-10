@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles.css";
+import "./ExitScreen.css";
 import { FirebaseStore } from "../helper/firestore.js";
 
 var CoffeeGlyph = require("./assets/coffee_glyph_smaller.png");
@@ -15,7 +15,6 @@ const Title = () => {
 const Body = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    var datastore = new FirebaseStore("");
 
     const Glyphs = ({ amount }) => {
         if (amount > 5) {
@@ -49,18 +48,19 @@ const Body = () => {
     // data will be null when fetch call fails
     if (!data) return <span>Data not available</span>;
 
-    console.log(data);
-
+    var display_location = data.location.split(",")[0];
     var quantity = data.queue_position;
 
     return (
-        <div id="divElement">
+        <div id="information-container">
+            <div>
+                <p id="para">
+                    You are number {quantity} in the queue! Your estimated wait
+                    time is {quantity * 4} minutes at the {display_location}{" "}
+                    location
+                </p>
+            </div>
             <Glyphs amount={quantity} />
-            <label>You are number {quantity} in the queue!</label>
-            <label>
-                Your wait time is {quantity * 4} minutes at the {data.location}{" "}
-                location
-            </label>
         </div>
     );
 };
@@ -85,10 +85,9 @@ async function gatherInformation() {
 }
 
 export default function ExitScreen() {
-    var datastore = new FirebaseStore("");
-
     return (
         <div>
+            <span id="login-background"></span>
             <Title />
             <Body />
         </div>
