@@ -1,6 +1,6 @@
-#div-header {
+header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -11,5 +11,5 @@
 
 .header-nav-button {
     margin-top: 12px;
-    font-family: "SoDoSans Regular";
+    font-family: 'SoDoSans Regular';
 }

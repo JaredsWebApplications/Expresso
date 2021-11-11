@@ -11,6 +11,7 @@ import LocationSelectionMenu from "./components/LocationSelection.js";
 import PaymentSelectionScreen from "./components/PaymentSelection.js";
 import PaymentInputScreen from "./components/PaymentInput.js";
 import ExitScreen from "./components/ExitScreen.js";
+import DrinkSelector from "./components/Jared.js";
 
 import "./styles.css";
 
@@ -22,6 +23,11 @@ class App extends React.Component {
                     <div>
                         <Switch>
                             <Route exact path="/" component={Login} />
+                            <Route
+                                exact
+                                path="/menu"
+                                component={DrinkSelector}
+                            />
                             <Route exact path="/exit" component={ExitScreen} />
                             <Route
                                 exact
