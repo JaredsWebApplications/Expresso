@@ -7,6 +7,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
  */
 
 import Login from "./components/LoginPrompt.js"; // import function exports like this
+import Signup from "./components/SignupPrompt.js";
+
 import LocationSelectionMenu from "./components/LocationSelection.js";
 import PaymentSelectionScreen from "./components/PaymentSelection.js";
 import PaymentInputScreen from "./components/PaymentInput.js";
@@ -44,6 +46,7 @@ class App extends React.Component {
                                 path="/paymentinput"
                                 component={PaymentInputScreen}
                             />
+                            <Route exact path="/signup" component={Signup} />
                         </Switch>
                     </div>
                 </BrowserRouter>

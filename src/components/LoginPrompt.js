@@ -49,9 +49,8 @@ export default class Login extends React.Component {
             });
             return;
         }
-        console.log(obtained);
         const [[document_id, value]] = obtained;
-        if (value.value.password !== this.info.password) {
+        if (value.password !== this.info.password) {
             alert(`Cannot authenticate ${this.info.emailAddress}! Try again!`);
         } else {
             await this.datastore.update(
@@ -106,6 +105,8 @@ export default class Login extends React.Component {
                             type="submit"
                             value="Login"
                         />
+
+                        <a href="/signup">Don't have an account?</a>
                     </form>
                 </div>
             </div>

@@ -39,8 +39,10 @@ export default class Signup extends React.Component {
             "emailAddress",
             this.info.emailAddress
         );
-        if (obtained === undefined || obtained.length == 0) {
-            alert(`cannot find the email address of ${this.info.emailAddress}`);
+        if (!(obtained === undefined || obtained.length == 0)) {
+            alert(
+                `email address ${this.info.emailAddress} has already been taken!`
+            );
             this.props.history.push({
                 pathname: "/",
                 state: {
@@ -49,25 +51,20 @@ export default class Signup extends React.Component {
             });
             return;
         }
-        console.log(obtained);
-        const [[document_id, value]] = obtained;
-        if (value.value.password !== this.info.password) {
-            alert(`Cannot authenticate ${this.info.emailAddress}! Try again!`);
-        } else {
-            await this.datastore.update(
-                {
-                    emailAddress: this.info.emailAddress,
-                },
-                "sessions",
-                "session_id_1"
-            );
-            this.props.history.push({
-                pathname: "/locations",
-                state: {
-                    response: "hey mom, no hands!",
-                },
-            });
-        }
+        await this.datastore.add(
+            {
+                emailAddress: this.info.emailAddress,
+                password: this.info.password,
+            },
+            "users"
+        );
+
+        this.props.history.push({
+            pathname: "/",
+            state: {
+                response: "hey mom, no hands!",
+            },
+        });
     }
 
     render() {
