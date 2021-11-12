@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Dropdown from "react-dropdown";
@@ -6,9 +6,25 @@ import "react-dropdown/style.css";
 import "./PaymentInput.css";
 import { FirebaseStore } from "../helper/firestore.js";
 
-// VISA glyph?
-//
+async function gatherInformation() {
+    var datastore = new FirebaseStore("");
+
+    const value = await datastore.getAll("sessions");
+    var current_session = {};
+
+    value.forEach((doc) => {
+        //const data = doc.data();
+        const [document_id, data] = doc;
+        if (document_id === "session_id_1") {
+            current_session = data;
+        }
+    });
+    return current_session.drink.price;
+}
 export default function PaymentInputScreen() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const history = useHistory();
     var datastore = new FirebaseStore("");
 
@@ -19,6 +35,30 @@ export default function PaymentInputScreen() {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // set loading to true before calling API
+                setLoading(true);
+                const data = await gatherInformation();
+                console.log(data);
+                setData(data);
+                // switch loading to false after fetch is complete
+                setLoading(false);
+            } catch (error) {
+                // add error handling here
+                setLoading(false);
+                console.log(error);
+            }
+        })();
+    }, []);
+
+    // return a Spinner when loading is true
+    if (loading) return <span>Loading</span>;
+
+    // data will be null when fetch call fails
+    if (!data) return <span>Data not available</span>;
 
     const onSubmit = (data, event) => {
         event.target.reset();
@@ -163,7 +203,11 @@ export default function PaymentInputScreen() {
                             })}
                         />
                     </div>
-                    <input id="payment-button" type="submit" value="pay now" />
+                    <input
+                        id="payment-button"
+                        type="submit"
+                        value={"Pay: $" + data}
+                    ></input>
                 </form>
             </div>
         </div>
