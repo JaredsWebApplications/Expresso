@@ -17,6 +17,8 @@ import PaymentInputScreen from "./components/PaymentInput.js";
 import ExitScreen from "./components/ExitScreen.js";
 import DrinkSelector from "./components/Menu.js";
 
+import "./styles.css";
+
 class App extends React.Component {
     render() {
         return (
