@@ -1,40 +1,36 @@
 import React from "react";
-import "./Header.css";
+import { withRouter } from 'react-router-dom';
+import "./DrinkSelectionHeader.css";
 
-export default function Header() {
-    const onSubmit = (event) => {
-        console.log(event.target.name);
-    };
+class Header extends React.Component {
+    constructor(props) {
+        super(props);
 
-    return (
-        <header id="div-header" className="shadow-sm p-3 bg-white">
-            <img src="./assets/logo.png" alt="Expresso" id="header-logo"></img>
-            <div id="header-navbar">
-                <button
-                    className="header-nav-button navbar-toggler"
-                    type="button"
-                    name="menu"
-                    onClick={onSubmit}
-                >
-                    Menu
-                </button>
-                <button
-                    className="header-nav-button navbar-toggler"
-                    type="button"
-                    name="locations"
-                    onClick={onSubmit}
-                >
-                    Locations
-                </button>
-                <button
-                    className="header-nav-button navbar-toggler"
-                    type="button"
-                    name="cart"
-                    onClick={onSubmit}
-                >
-                    Cart
-                </button>
-            </div>
-        </header>
-    );
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick(event) {
+        console.log("clicked header button " + event.target.name);
+        this.props.history.push('/' + event.target.name);
+    }
+
+    render() {
+        return (
+            <header className="shadow-sm p-3 bg-white">
+                <img src="./assets/logo.png" alt="Expresso" id="header-logo"></img>
+                <div id="header-navbar">
+                    <button
+                        className="header-nav-button navbar-toggler"
+                        type="button"
+                        name="locations"
+                        onClick={this.onClick}
+                    >
+                        Locations
+                    </button>
+                </div>
+            </header>
+        );
+    }
 }
+
+export default withRouter(Header);

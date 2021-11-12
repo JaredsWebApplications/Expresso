@@ -31,6 +31,10 @@ export default class Login extends React.Component {
         }
     }
 
+    displayFieldError(error) {
+        this.setState({"errorMessage": error});
+    }
+
     async handleLoginSubmit(event) {
         event.preventDefault();
 
@@ -40,7 +44,8 @@ export default class Login extends React.Component {
             this.info.emailAddress
         );
         if (obtained === undefined || obtained.length == 0) {
-            alert(`cannot find the email address of ${this.info.emailAddress}`);
+            //alert(`cannot find the email address of ${this.info.emailAddress}`);
+            this.displayFieldError('Invalid email address.');
             this.props.history.push({
                 pathname: "/",
                 state: {
@@ -51,7 +56,8 @@ export default class Login extends React.Component {
         }
         const [[document_id, value]] = obtained;
         if (value.password !== this.info.password) {
-            alert(`Cannot authenticate ${this.info.emailAddress}! Try again!`);
+            //alert(`Cannot authenticate ${this.info.emailAddress}! Try again!`);
+            this.displayFieldError('Invalid password.');
         } else {
             await this.datastore.update(
                 {

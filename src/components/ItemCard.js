@@ -1,5 +1,6 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+
+import './DrinkSelectorPopup';
 
 class ItemCard extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class ItemCard extends React.Component {
 
     OnUserClick(event) {
         console.log("user clicked on itemcard " + this.name);
+        this.props.PopupDrinkCustomizer(this.name);
     }
 
     render() {

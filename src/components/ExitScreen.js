@@ -53,14 +53,16 @@ const Body = () => {
 
     return (
         <div id="information-container">
+            <p id="para">
+                You are number {quantity} in the queue! Your estimated wait
+                time is {quantity * 4} minutes at the {display_location}{" "}
+                location
+            </p>
             <div>
-                <p id="para">
-                    You are number {quantity} in the queue! Your estimated wait
-                    time is {quantity * 4} minutes at the {display_location}{" "}
-                    location
-                </p>
+                <Glyphs amount={quantity} />
             </div>
-            <Glyphs amount={quantity} />
+            <br/>
+            <a href="/menu">Back to Menu</a>
         </div>
     );
 };
