@@ -81,7 +81,8 @@ const GatheredInformation = () => {
             );
 
             history.push({
-                pathname: "/paymentselection",
+                //pathname: "/paymentselection",
+                pathname: "/menu",
                 state: {
                     response: "hey mom, no hands!",
                 },

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
+import './index.css'
 
 /*
  * Defined by us
@@ -15,7 +16,7 @@ import LocationSelectionMenu from "./components/LocationSelection.js";
 import PaymentSelectionScreen from "./components/PaymentSelection.js";
 import PaymentInputScreen from "./components/PaymentInput.js";
 import ExitScreen from "./components/ExitScreen.js";
-import DrinkSelector from "./components/Menu.js";
+import DrinkSelector from "./components/DrinkSelector.js";
 
 class App extends React.Component {
     render() {

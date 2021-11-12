@@ -1,20 +1,21 @@
 import React from "react";
-import "./Header.css";
+
+import "./DrinkSelectionHeader.css";
 
 export default function Header() {
-    const onSubmit = (event) => {
-        console.log(event.target.name);
+    const onClick = (event) => {
+        console.log("clicked header button " + event.target.name);
     };
 
     return (
-        <header id="div-header" className="shadow-sm p-3 bg-white">
+        <header className="shadow-sm p-3 bg-white">
             <img src="./assets/logo.png" alt="Expresso" id="header-logo"></img>
             <div id="header-navbar">
                 <button
                     className="header-nav-button navbar-toggler"
                     type="button"
                     name="menu"
-                    onClick={onSubmit}
+                    onClick={onClick}
                 >
                     Menu
                 </button>
@@ -22,7 +23,7 @@ export default function Header() {
                     className="header-nav-button navbar-toggler"
                     type="button"
                     name="locations"
-                    onClick={onSubmit}
+                    onClick={onClick}
                 >
                     Locations
                 </button>
@@ -30,7 +31,7 @@ export default function Header() {
                     className="header-nav-button navbar-toggler"
                     type="button"
                     name="cart"
-                    onClick={onSubmit}
+                    onClick={onClick}
                 >
                     Cart
                 </button>
