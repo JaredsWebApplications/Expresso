@@ -1,9 +1,10 @@
 // https://www.youtube.com/watch?v=i8fAO_zyFAM
 
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import './DrinkSelectorPopup.css';
 
-export default class DrinkSelectorPopup extends React.Component {
+class DrinkSelectorPopup extends React.Component {
     constructor(props) {
         super(props);
         
@@ -20,7 +21,8 @@ export default class DrinkSelectorPopup extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.AddToCart = this.AddToCart.bind(this);
+        //this.AddToCart = this.AddToCart.bind(this);
+        this.Purchase = this.Purchase.bind(this);
     }
 
     handleChange(e){
@@ -31,7 +33,7 @@ export default class DrinkSelectorPopup extends React.Component {
         //console.log(e.target.name + " " + e.target.value);
     }
 
-    AddToCart() {
+    /*AddToCart() {
         console.log(`added selected item to cart:\n
         name: ${this.info.name}
         isIced: ${this.info.isIced}
@@ -44,6 +46,18 @@ export default class DrinkSelectorPopup extends React.Component {
         // firestore store to collections 'cart'
         // clicking on the cart header button (in DrinkSelectionHeader.js) will-
         // retrieve the document, from the cart collection, of that user via session id key?
+
+        this.props.ClosePopup()
+    }*/
+    Purchase() {
+        console.log(`purchasing selected item:\n
+        name: ${this.info.name}
+        isIced: ${this.info.isIced}
+        sugarAmount: ${this.info.sugarAmount}
+        cupSize: ${this.info.cupSize}
+        `);
+        
+        this.props.history.push('/paymentselection');
 
         this.props.ClosePopup()
     }
@@ -77,7 +91,7 @@ export default class DrinkSelectorPopup extends React.Component {
                                 <input type="radio" className="form-check-input" name="cupSize" value="Small" defaultChecked onChange={(e) => {this.handleChange(e)}}/><label>Small</label>&nbsp;
                             </div>
                             <br/>
-                            <button className='btn btn-success' onClick={this.AddToCart}>Add to Cart</button>
+                            <button className='btn btn-success' onClick={this.Purchase}>Purchase</button>
                         </div>
                     </div>
                 </div>
@@ -85,3 +99,5 @@ export default class DrinkSelectorPopup extends React.Component {
         );
     }
 }
+
+export default withRouter(DrinkSelectorPopup);
